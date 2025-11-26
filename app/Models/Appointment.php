@@ -10,9 +10,9 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'student_id',
         'full_name',
+        'phone_number',
         'branch',
         'purpose',
         'requested_date',
@@ -24,9 +24,4 @@ class Appointment extends Model
         'purpose' => 'array',
         'requested_date' => 'date',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

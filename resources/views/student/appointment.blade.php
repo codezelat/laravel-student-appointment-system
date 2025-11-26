@@ -17,6 +17,12 @@
             </div>
 
             <div>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="tel" name="phone_number" id="phone_number" placeholder="Phone Number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" required pattern="[0-9]{10}">
+                <p class="mt-1 text-xs text-gray-500">Enter 10 digit phone number (e.g., 07xxxxxxxx)</p>
+            </div>
+
+            <div>
                 <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
                 <select name="branch" id="branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" required>
                     <option value="">Select Branch</option>
@@ -49,7 +55,6 @@
             </div>
 
             <div class="flex justify-end">
-                <a href="{{ route('student.dashboard') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 mr-2">Cancel</a>
                 <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Submit</button>
             </div>
         </div>

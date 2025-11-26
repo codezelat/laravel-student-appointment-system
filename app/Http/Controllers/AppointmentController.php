@@ -4,16 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
-    public function index()
-    {
-        $appointments = Auth::user()->appointments()->latest()->get();
-        return view('student.dashboard', compact('appointments'));
-    }
-
     public function create()
     {
         return view('student.appointment');
@@ -24,20 +17,22 @@ class AppointmentController extends Controller
         $request->validate([
             'student_id' => 'required|string',
             'full_name' => 'required|string',
+            'phone_number' => 'required|string|regex:/^[0-9]{10}$/',
             'branch' => 'required|string',
             'purpose' => 'required|array',
             'requested_date' => 'required|date',
         ]);
 
-        Auth::user()->appointments()->create([
+        Appointment::create([
             'student_id' => $request->student_id,
             'full_name' => $request->full_name,
+            'phone_number' => $request->phone_number,
             'branch' => $request->branch,
             'purpose' => $request->purpose,
             'requested_date' => $request->requested_date,
             'status' => 'pending',
         ]);
 
-        return redirect()->route('student.dashboard')->with('success', 'Appointment submitted successfully!');
+        return redirect()->route('appointment.create')->with('success', 'Appointment submitted successfully!');
     }
 }

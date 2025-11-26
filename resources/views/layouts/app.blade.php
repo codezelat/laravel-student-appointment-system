@@ -19,18 +19,6 @@
                         </div>
                     </div>
                     <div class="flex items-center">
-                        @auth
-                            <span class="text-gray-700 mr-4">Hello, {{ Auth::user()->name }}</span>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
-                            </form>
-                        @else
-                            @if(!request()->routeIs('admin.*'))
-                                <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:text-gray-900 mr-4">Login</a>
-                                <a href="{{ route('register') }}" class="text-sm text-gray-700 hover:text-gray-900">Register</a>
-                            @endif
-                        @endauth
                         @if(session('admin_logged_in'))
                              <span class="text-gray-700 mr-4">Admin</span>
                             <form method="POST" action="{{ route('admin.logout') }}">

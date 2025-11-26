@@ -9,19 +9,23 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($appointments as $appointment)
+                @foreach($appointments as $index => $appointment)
                 <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">{{ $appointment->full_name }}</div>
                         <div class="text-sm text-gray-500">{{ $appointment->student_id }}</div>
+                        <div class="text-sm text-gray-500">{{ $appointment->phone_number }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ $appointment->branch }}
@@ -40,6 +44,13 @@
                             @method('PUT')
                             <input type="text" name="admin_time_slot" value="{{ $appointment->admin_time_slot }}" placeholder="e.g. 10:00 AM - 10:30 AM" class="border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-1 border" required>
                             <button type="submit" class="text-indigo-600 hover:text-indigo-900">Assign</button>
+                        </form>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <form action="{{ route('admin.delete', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
                         </form>
                     </td>
                 </tr>
