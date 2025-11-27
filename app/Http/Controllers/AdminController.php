@@ -47,7 +47,7 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
-        $appointments = Appointment::latest()->get();
+        $appointments = Appointment::latest()->paginate(25);
         return view('admin.dashboard', compact('appointments'));
     }
 
@@ -58,11 +58,13 @@ class AdminController extends Controller
         }
 
         $request->validate([
-            'admin_time_slot' => 'required|string',
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'time_slot' => 'required|string',
         ]);
 
         $appointment->update([
-            'admin_time_slot' => $request->admin_time_slot,
+            'appointment_date' => $request->appointment_date,
+            'time_slot' => $request->time_slot,
             'status' => 'approved',
         ]);
 
@@ -71,13 +73,13 @@ class AdminController extends Controller
             $this->smsService->sendAppointmentConfirmation(
                 $appointment->phone_number,
                 $appointment->full_name,
-                $appointment->requested_date->format('Y-m-d'),
-                $request->admin_time_slot,
+                $request->appointment_date,
+                $request->time_slot,
                 $appointment->branch
             );
         }
 
-        return back()->with('success', 'Time slot assigned successfully and SMS notification sent!');
+        return back()->with('success', 'Appointment date and time assigned successfully! SMS notification sent.');
     }
 
     public function destroy(Appointment $appointment)

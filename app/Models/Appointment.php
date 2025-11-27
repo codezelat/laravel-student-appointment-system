@@ -15,13 +15,13 @@ class Appointment extends Model
         'phone_number',
         'branch',
         'purpose',
-        'requested_date',
-        'admin_time_slot',
+        'appointment_date',
+        'time_slot',
         'status',
     ];
 
     protected $casts = [
         'purpose' => 'array',
-        'requested_date' => 'date',
+        'appointment_date' => 'date',
     ];
 }

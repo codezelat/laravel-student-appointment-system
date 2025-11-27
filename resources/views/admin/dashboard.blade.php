@@ -5,30 +5,25 @@
     <h2 class="text-2xl font-bold text-gray-800">Admin Dashboard</h2>
 
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        @if($appointments->count() > 0)
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Schedule Appointment</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($appointments as $index => $appointment)
+                @forelse($appointments as $index => $appointment)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">{{ $appointment->full_name }}</div>
                         <div class="text-sm text-gray-500">{{ $appointment->student_id }}</div>
                         <div class="text-sm text-gray-500">{{ $appointment->phone_number }}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ $appointment->branch }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-900">
                         <ul class="list-disc list-inside">
@@ -37,13 +32,39 @@
                             @endforeach
                         </ul>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $appointment->requested_date->format('Y-m-d') }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <form action="{{ route('admin.update', $appointment) }}" method="POST" class="flex items-center space-x-2">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        @if($appointment->status === 'approved')
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Approved
+                            </span>
+                            <div class="mt-1 text-xs text-gray-600">
+                                <div>{{ $appointment->appointment_date ? $appointment->appointment_date->format('M d, Y') : 'N/A' }}</div>
+                                <div>{{ $appointment->time_slot }}</div>
+                            </div>
+                        @else
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                Pending
+                            </span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm font-medium">
+                        <form action="{{ route('admin.update', $appointment) }}" method="POST" class="space-y-2">
                             @csrf
                             @method('PUT')
-                            <input type="text" name="admin_time_slot" value="{{ $appointment->admin_time_slot }}" placeholder="e.g. 10:00 AM - 10:30 AM" class="border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-1 border" required>
-                            <button type="submit" class="text-indigo-600 hover:text-indigo-900">Assign</button>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Date</label>
+                                <input type="date" name="appointment_date" value="{{ $appointment->appointment_date ? $appointment->appointment_date->format('Y-m-d') : '' }}" min="{{ date('Y-m-d') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Time Range</label>
+                                <div class="flex items-center space-x-1">
+                                    <input type="time" name="start_time" id="start_time_{{ $appointment->id }}" value="{{ $appointment->time_slot ? explode(' - ', $appointment->time_slot)[0] ?? '' : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                                    <span class="text-gray-500 text-xs">to</span>
+                                    <input type="time" name="end_time" id="end_time_{{ $appointment->id }}" value="{{ $appointment->time_slot && count(explode(' - ', $appointment->time_slot)) > 1 ? explode(' - ', $appointment->time_slot)[1] : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                                </div>
+                            </div>
+                            <input type="hidden" name="time_slot" id="time_slot_{{ $appointment->id }}">
+                            <button type="submit" onclick="combineTimeSlot({{ $appointment->id }})" class="w-full bg-indigo-600 text-white px-2 py-1 rounded text-xs hover:bg-indigo-700">{{ $appointment->status === 'approved' ? 'Update' : 'Assign' }}</button>
                         </form>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -54,14 +75,67 @@
                         </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        No appointments to manage.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
-        @else
-            <div class="p-6 text-center text-gray-500">
-                No appointments to manage.
-            </div>
-        @endif
     </div>
+
+    @if($appointments->hasPages())
+    <div class="mt-4">
+        {{ $appointments->links() }}
+    </div>
+    @endif
 </div>
+
+<script>
+function combineTimeSlot(appointmentId) {
+    const startTime = document.getElementById('start_time_' + appointmentId).value;
+    const endTime = document.getElementById('end_time_' + appointmentId).value;
+    
+    if (startTime && endTime) {
+        // Convert 24-hour format to 12-hour format with AM/PM
+        const startFormatted = formatTime(startTime);
+        const endFormatted = formatTime(endTime);
+        
+        // Combine into time slot format
+        const timeSlot = startFormatted + ' - ' + endFormatted;
+        document.getElementById('time_slot_' + appointmentId).value = timeSlot;
+    }
+}
+
+function formatTime(time) {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return hour12 + ':' + minutes + ' ' + ampm;
+}
+
+// Auto-set end time to 30 minutes after start time when start time changes
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[type="time"][name="start_time"]').forEach(function(startInput) {
+        startInput.addEventListener('change', function() {
+            const appointmentId = this.id.replace('start_time_', '');
+            const endInput = document.getElementById('end_time_' + appointmentId);
+            
+            if (this.value && !endInput.value) {
+                const [hours, minutes] = this.value.split(':');
+                const date = new Date();
+                date.setHours(parseInt(hours));
+                date.setMinutes(parseInt(minutes) + 30);
+                
+                const endHours = String(date.getHours()).padStart(2, '0');
+                const endMinutes = String(date.getMinutes()).padStart(2, '0');
+                endInput.value = endHours + ':' + endMinutes;
+            }
+        });
+    });
+});
+</script>
 @endsection

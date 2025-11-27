@@ -18,21 +18,19 @@ class AppointmentController extends Controller
             'student_id' => 'required|string',
             'full_name' => 'required|string',
             'phone_number' => 'required|string|regex:/^[0-9]{10}$/',
-            'branch' => 'required|string',
-            'purpose' => 'required|array',
-            'requested_date' => 'required|date',
+            'address' => 'required|string',
+            'purpose' => 'required|array|min:1',
         ]);
 
         Appointment::create([
             'student_id' => $request->student_id,
             'full_name' => $request->full_name,
             'phone_number' => $request->phone_number,
-            'branch' => $request->branch,
+            'branch' => $request->address, // Store in branch column for backward compatibility
             'purpose' => $request->purpose,
-            'requested_date' => $request->requested_date,
             'status' => 'pending',
         ]);
 
-        return redirect()->route('appointment.create')->with('success', 'Appointment submitted successfully!');
+        return redirect()->route('appointment.create')->with('success', 'Appointment submitted successfully! The admin will assign a date and time slot shortly.');
     }
 }

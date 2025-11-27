@@ -23,12 +23,11 @@
             </div>
 
             <div>
-                <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
-                <select name="branch" id="branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" required>
-                    <option value="">Select Branch</option>
-                    <option value="Colombo">Colombo</option>
-                    <option value="Gampola">Gampola</option>
-                </select>
+                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                <div class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-50 p-2 border text-sm text-gray-700">
+                    World Trade Center, Level 26, East Tower, Colombo 01
+                </div>
+                <input type="hidden" name="address" value="World Trade Center, Level 26, East Tower, Colombo 01">
             </div>
 
             <div>
@@ -49,9 +48,10 @@
                 </div>
             </div>
 
-            <div>
-                <label for="requested_date" class="block text-sm font-medium text-gray-700">Requested Date</label>
-                <input type="date" name="requested_date" id="requested_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" required min="{{ date('Y-m-d') }}">
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+                <p class="text-sm text-blue-700">
+                    <span class="font-semibold">Note:</span> The admin will assign a date and time slot for your appointment after review and after approval you will get a SMS.
+                </p>
             </div>
 
             <div class="flex justify-end">
