@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md border-t-4 border-red-600">
     <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Admin Login</h2>
-    <form method="POST" action="{{ route('admin.authenticate') }}">
+    <form method="POST" action="{{ route('sitc-admin.authenticate') }}">
         @csrf
         <div class="mb-4">
             <label for="username" class="block text-sm font-medium text-gray-700">Username</label>

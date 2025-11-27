@@ -16,7 +16,7 @@ class AdminAuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+            return redirect()->route('sitc-admin.login');
         }
 
         return $next($request);

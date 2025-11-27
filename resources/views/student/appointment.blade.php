@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-indigo-600 mb-2">SITC Appointment Portal</h1>
+    <p class="text-gray-600">Book your appointment with SITC Campus</p>
+</div> -->
+
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold mb-6 text-gray-800">Book Appointment</h2>
     <form method="POST" action="{{ route('appointment.store') }}">

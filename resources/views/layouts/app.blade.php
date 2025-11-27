@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'SITC Appointment') }}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/sitc-logo.png') }}">
+    
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -13,15 +20,12 @@
         <nav class="bg-white border-b border-gray-200">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
-                    <div class="flex">
-                        <div class="shrink-0 flex items-center">
-                            <a href="/" class="text-2xl font-bold text-indigo-600">SITC Appointment</a>
-                        </div>
+                    <div class="flex items-center space-x-4">
+                        <img src="{{ asset('images/sitc-logo.png') }}" alt="SITC Campus Logo" class="h-12 w-auto object-contain">
                     </div>
                     <div class="flex items-center">
                         @if(session('admin_logged_in'))
-                             <span class="text-gray-700 mr-4">Admin</span>
-                            <form method="POST" action="{{ route('admin.logout') }}">
+                            <form method="POST" action="{{ route('sitc-admin.logout') }}">
                                 @csrf
                                 <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
                             </form>

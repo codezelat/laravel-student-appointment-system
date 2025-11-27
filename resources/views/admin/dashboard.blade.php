@@ -7,15 +7,15 @@
         
         <!-- Status Filter Buttons -->
         <div class="flex space-x-2">
-            <a href="{{ route('admin.dashboard', ['status' => 'all']) }}" 
+            <a href="{{ route('sitc-admin.dashboard', ['status' => 'all']) }}" 
                class="px-4 py-2 text-sm font-medium rounded-md {{ request('status', 'all') === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                 All Appointments
             </a>
-            <a href="{{ route('admin.dashboard', ['status' => 'pending']) }}" 
+            <a href="{{ route('sitc-admin.dashboard', ['status' => 'pending']) }}" 
                class="px-4 py-2 text-sm font-medium rounded-md {{ request('status') === 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                 Pending
             </a>
-            <a href="{{ route('admin.dashboard', ['status' => 'approved']) }}" 
+            <a href="{{ route('sitc-admin.dashboard', ['status' => 'approved']) }}" 
                class="px-4 py-2 text-sm font-medium rounded-md {{ request('status') === 'approved' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                 Approved
             </a>
@@ -75,7 +75,7 @@
                             </div>
                         @else
                             <!-- Show scheduling form for pending appointments -->
-                            <form action="{{ route('admin.update', $appointment) }}" method="POST" class="space-y-2">
+                            <form action="{{ route('sitc-admin.update', $appointment) }}" method="POST" class="space-y-2">
                                 @csrf
                                 @method('PUT')
                                 <div>
@@ -96,7 +96,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <form action="{{ route('admin.delete', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                        <form action="{{ route('sitc-admin.delete', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>

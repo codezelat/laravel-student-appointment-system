@@ -29,7 +29,7 @@ class AdminController extends Controller
 
         if ($request->username === 'sitcadmin' && $request->password === 'password') {
             Session::put('admin_logged_in', true);
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('sitc-admin.dashboard');
         }
 
         return back()->withErrors(['username' => 'Invalid credentials']);
@@ -38,13 +38,13 @@ class AdminController extends Controller
     public function logout()
     {
         Session::forget('admin_logged_in');
-        return redirect()->route('admin.login');
+        return redirect()->route('sitc-admin.login');
     }
 
     public function index(Request $request)
     {
         if (!Session::get('admin_logged_in')) {
-            return redirect()->route('admin.login');
+            return redirect()->route('sitc-admin.login');
         }
 
         $status = $request->get('status', 'all');
@@ -72,7 +72,7 @@ class AdminController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         if (!Session::get('admin_logged_in')) {
-            return redirect()->route('admin.login');
+            return redirect()->route('sitc-admin.login');
         }
 
         // Prevent updating already approved appointments
@@ -108,7 +108,7 @@ class AdminController extends Controller
     public function destroy(Appointment $appointment)
     {
         if (!Session::get('admin_logged_in')) {
-            return redirect()->route('admin.login');
+            return redirect()->route('sitc-admin.login');
         }
 
         $appointment->delete();
