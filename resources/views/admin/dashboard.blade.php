@@ -2,7 +2,25 @@
 
 @section('content')
 <div class="space-y-6">
-    <h2 class="text-2xl font-bold text-gray-800">Admin Dashboard</h2>
+    <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-gray-800">Admin Dashboard</h2>
+        
+        <!-- Status Filter Buttons -->
+        <div class="flex space-x-2">
+            <a href="{{ route('admin.dashboard', ['status' => 'all']) }}" 
+               class="px-4 py-2 text-sm font-medium rounded-md {{ request('status', 'all') === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                All Appointments
+            </a>
+            <a href="{{ route('admin.dashboard', ['status' => 'pending']) }}" 
+               class="px-4 py-2 text-sm font-medium rounded-md {{ request('status') === 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                Pending
+            </a>
+            <a href="{{ route('admin.dashboard', ['status' => 'approved']) }}" 
+               class="px-4 py-2 text-sm font-medium rounded-md {{ request('status') === 'approved' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                Approved
+            </a>
+        </div>
+    </div>
 
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">

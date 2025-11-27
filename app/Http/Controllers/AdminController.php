@@ -41,14 +41,32 @@ class AdminController extends Controller
         return redirect()->route('admin.login');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Session::get('admin_logged_in')) {
             return redirect()->route('admin.login');
         }
 
-        $appointments = Appointment::latest()->paginate(25);
-        return view('admin.dashboard', compact('appointments'));
+        $status = $request->get('status', 'all');
+        
+        $query = Appointment::query();
+        
+        // Filter by status
+        if ($status === 'pending') {
+            $query->where('status', 'pending')->latest();
+        } elseif ($status === 'approved') {
+            $query->where('status', 'approved')->orderBy('appointment_date', 'desc')->orderBy('time_slot', 'asc');
+        } else {
+            // Show all, with pending first, then approved ordered by date and time
+            $query->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
+                  ->orderBy('appointment_date', 'desc')
+                  ->orderBy('time_slot', 'asc')
+                  ->orderBy('created_at', 'desc');
+        }
+        
+        $appointments = $query->paginate(25)->appends(['status' => $status]);
+        
+        return view('admin.dashboard', compact('appointments', 'status'));
     }
 
     public function update(Request $request, Appointment $appointment)
