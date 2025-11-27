@@ -57,6 +57,11 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
+        // Prevent updating already approved appointments
+        if ($appointment->status === 'approved') {
+            return back()->with('error', 'This appointment has already been scheduled and cannot be modified.');
+        }
+
         $request->validate([
             'appointment_date' => 'required|date|after_or_equal:today',
             'time_slot' => 'required|string',

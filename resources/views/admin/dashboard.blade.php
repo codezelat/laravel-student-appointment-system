@@ -12,7 +12,7 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Schedule Appointment</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Details</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
                 </tr>
             </thead>
@@ -48,24 +48,34 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 text-sm font-medium">
-                        <form action="{{ route('admin.update', $appointment) }}" method="POST" class="space-y-2">
-                            @csrf
-                            @method('PUT')
-                            <div>
-                                <label class="block text-xs text-gray-600 mb-1">Date</label>
-                                <input type="date" name="appointment_date" value="{{ $appointment->appointment_date ? $appointment->appointment_date->format('Y-m-d') : '' }}" min="{{ date('Y-m-d') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                        @if($appointment->status === 'approved')
+                            <!-- Show assigned appointment details as read-only -->
+                            <div class="text-xs text-gray-600">
+                                <div class="font-medium text-gray-900">{{ $appointment->appointment_date ? $appointment->appointment_date->format('M d, Y') : 'N/A' }}</div>
+                                <div class="text-gray-500">{{ $appointment->time_slot }}</div>
+                                <div class="mt-1 text-green-600 font-medium">✓ Assigned</div>
                             </div>
-                            <div>
-                                <label class="block text-xs text-gray-600 mb-1">Time Range</label>
-                                <div class="flex items-center space-x-1">
-                                    <input type="time" name="start_time" id="start_time_{{ $appointment->id }}" value="{{ $appointment->time_slot ? explode(' - ', $appointment->time_slot)[0] ?? '' : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
-                                    <span class="text-gray-500 text-xs">to</span>
-                                    <input type="time" name="end_time" id="end_time_{{ $appointment->id }}" value="{{ $appointment->time_slot && count(explode(' - ', $appointment->time_slot)) > 1 ? explode(' - ', $appointment->time_slot)[1] : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                        @else
+                            <!-- Show scheduling form for pending appointments -->
+                            <form action="{{ route('admin.update', $appointment) }}" method="POST" class="space-y-2">
+                                @csrf
+                                @method('PUT')
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Date</label>
+                                    <input type="date" name="appointment_date" value="{{ $appointment->appointment_date ? $appointment->appointment_date->format('Y-m-d') : '' }}" min="{{ date('Y-m-d') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
                                 </div>
-                            </div>
-                            <input type="hidden" name="time_slot" id="time_slot_{{ $appointment->id }}">
-                            <button type="submit" onclick="combineTimeSlot({{ $appointment->id }})" class="w-full bg-indigo-600 text-white px-2 py-1 rounded text-xs hover:bg-indigo-700">{{ $appointment->status === 'approved' ? 'Update' : 'Assign' }}</button>
-                        </form>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Time Range</label>
+                                    <div class="flex items-center space-x-1">
+                                        <input type="time" name="start_time" id="start_time_{{ $appointment->id }}" value="{{ $appointment->time_slot ? explode(' - ', $appointment->time_slot)[0] ?? '' : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                                        <span class="text-gray-500 text-xs">to</span>
+                                        <input type="time" name="end_time" id="end_time_{{ $appointment->id }}" value="{{ $appointment->time_slot && count(explode(' - ', $appointment->time_slot)) > 1 ? explode(' - ', $appointment->time_slot)[1] : '' }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs p-1.5 border" required>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="time_slot" id="time_slot_{{ $appointment->id }}">
+                                <button type="submit" onclick="combineTimeSlot({{ $appointment->id }})" class="w-full bg-indigo-600 text-white px-2 py-1 rounded text-xs hover:bg-indigo-700">Assign</button>
+                            </form>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <form action="{{ route('admin.delete', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
