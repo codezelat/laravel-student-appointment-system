@@ -27,7 +27,7 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-        if ($request->username === 'sitcadmin' && $request->password === 'password') {
+        if ($request->username === env('ADMIN_USERNAME') && $request->password === env('ADMIN_PASSWORD')) {
             Session::put('admin_logged_in', true);
             return redirect()->route('sitc-admin.dashboard');
         }
