@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -27,7 +28,12 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-        if ($request->username === env('ADMIN_USERNAME') && $request->password === env('ADMIN_PASSWORD')) {
+        // Get credentials from config (which reads from .env)
+        $adminUsername = config('admin.username');
+        $adminPassword = config('admin.password');
+
+        // Verify username and password
+        if ($request->username === $adminUsername && $request->password === $adminPassword) {
             Session::put('admin_logged_in', true);
             return redirect()->route('sitc-admin.dashboard');
         }
