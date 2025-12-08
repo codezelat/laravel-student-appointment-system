@@ -104,7 +104,7 @@ class AdminController extends Controller
                 $appointment->full_name,
                 $request->appointment_date,
                 $request->time_slot,
-                $appointment->branch
+                $appointment->address
             );
         }
 

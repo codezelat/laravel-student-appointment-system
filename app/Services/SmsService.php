@@ -97,7 +97,7 @@ class SmsService
      */
     public function sendAppointmentConfirmation($phoneNumber, $studentName, $date, $timeSlot, $address)
     {
-        $message = "Dear {$studentName}, your appointment at World Trade Center, Level 26, East Tower, Colombo 01 has been confirmed for {$date} at {$timeSlot}. Please arrive 10 minutes early. Thank you!";
+        $message = "Dear {$studentName}, your appointment at {$address} has been confirmed for {$date} at {$timeSlot}. Please arrive 10 minutes early. Thank you!";
 
         return $this->sendSms($phoneNumber, $message);
     }

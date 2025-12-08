@@ -28,6 +28,7 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Details</th>
@@ -42,6 +43,9 @@
                         <div class="text-sm font-medium text-gray-900">{{ $appointment->full_name }}</div>
                         <div class="text-sm text-gray-500">{{ $appointment->student_id }}</div>
                         <div class="text-sm text-gray-500">{{ $appointment->phone_number }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {{ $appointment->address ?? 'N/A' }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-900">
                         <ul class="list-disc list-inside">

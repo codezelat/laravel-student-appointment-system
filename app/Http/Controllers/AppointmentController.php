@@ -26,6 +26,7 @@ class AppointmentController extends Controller
             'student_id' => $request->student_id,
             'full_name' => $request->full_name,
             'phone_number' => $request->phone_number,
+            'address' => $request->address,
             'branch' => $request->address, // Store in branch column for backward compatibility
             'purpose' => $request->purpose,
             'status' => 'pending',

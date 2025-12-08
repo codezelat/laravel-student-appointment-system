@@ -28,11 +28,12 @@
             </div>
 
             <div>
-                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                <div class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-50 p-2 border text-sm text-gray-700">
-                    World Trade Center, Level 26, East Tower, Colombo 01
-                </div>
-                <input type="hidden" name="address" value="World Trade Center, Level 26, East Tower, Colombo 01">
+                <label for="address" class="block text-sm font-medium text-gray-700">Branch</label>
+                <select name="address" id="address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" required>
+                    <option value="">Select Branch</option>
+                    <option value="Colombo Branch">Colombo Branch</option>
+                    <option value="Gampola Branch">Gampola Branch</option>
+                </select>
             </div>
 
             <div>

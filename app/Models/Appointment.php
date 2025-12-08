@@ -13,6 +13,7 @@ class Appointment extends Model
         'student_id',
         'full_name',
         'phone_number',
+        'address',
         'branch',
         'purpose',
         'appointment_date',
