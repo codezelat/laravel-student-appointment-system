@@ -61,11 +61,14 @@ class AdminController extends Controller
         if ($status === 'pending') {
             $query->where('status', 'pending')->latest();
         } elseif ($status === 'approved') {
-            $query->where('status', 'approved')->orderBy('appointment_date', 'desc')->orderBy('time_slot', 'asc');
+            // Order approved appointments by nearest date first (ascending)
+            $query->where('status', 'approved')
+                  ->orderBy('appointment_date', 'asc')
+                  ->orderBy('time_slot', 'asc');
         } else {
-            // Show all, with pending first, then approved ordered by date and time
+            // Show all, with pending first, then approved ordered by nearest date
             $query->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
-                  ->orderBy('appointment_date', 'desc')
+                  ->orderBy('appointment_date', 'asc')
                   ->orderBy('time_slot', 'asc')
                   ->orderBy('created_at', 'desc');
         }
