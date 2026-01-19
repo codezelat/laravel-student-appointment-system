@@ -11,9 +11,11 @@ return [
     */
 
     'api_url' => env('SMS_API_URL', 'https://msg.text-ware.com/send_sms.php'),
-    'username' => env('SMS_USERNAME', 'TW01050_sitc_campus_tr'),
-    'password' => env('SMS_PASSWORD', 'k0oMp@1DmBXbd'),
-    'source' => env('SMS_SOURCE', 'SITC CAMPUS'),
+
+    // NOTE: Do NOT commit credentials to the repository. Set these values in your environment (.env) file.
+    'username' => env('SMS_USERNAME'),
+    'password' => env('SMS_PASSWORD'),
+    'source' => env('SMS_SOURCE'),
     
     /*
     |--------------------------------------------------------------------------
