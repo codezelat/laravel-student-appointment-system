@@ -182,11 +182,3 @@ if ($request->username === $adminUsername && Hash::check($request->password, $ad
 
 This project is licensed under the MIT License — see the `LICENSE` file for details.
 
----
-
-If you'd like, I can also:
-
-- Create a small patch to fix the admin authentication to use `Hash::check`.
-- Add automated checks to detect accidental credential defaults (e.g., a simple pre-commit hook).
-
-If you want me to apply any of those, say which one and I will implement it. ✅
